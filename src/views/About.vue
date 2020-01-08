@@ -8,7 +8,7 @@
       placeholder="请输入"
     ></v-input>
     <v-input v-model="msg3" placeholder="请输入" clearable></v-input>
-
+    <v-input @change="getValue($event)" v-model="msg2"></v-input>
     <!-- <input type="text" v-model="msg" /> -->
     <div>{{ msg }}</div>
     <div>{{ msg3 }}</div>
@@ -26,7 +26,12 @@ export default {
       msg3: ''
     }
   },
-  methods: {},
+  methods: {
+    getValue(val) {
+      // eslint-disable-next-line no-console
+      console.log(val)
+    }
+  },
   components: {
     vInput
   }

@@ -7,6 +7,8 @@
         v-model="newValue"
         :placeholder="placeholder"
         :disabled="disabled"
+        @blur="setValue"
+        @keyup.enter="setValue"
       />
       <span
         class="clean"
@@ -81,6 +83,9 @@ export default {
   methods: {
     cleanAll() {
       this.newValue = ''
+    },
+    setValue() {
+      this.$emit('change', this.value)
     }
   }
 }
