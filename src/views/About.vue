@@ -1,19 +1,16 @@
 <template>
   <div class="about">
     <h1>这是input组件</h1>
-    <v-input
-      v-model="msg"
+    <v-input v-model="msg"
       type="textarea"
       clearable
-      placeholder="请输入"
-    ></v-input>
-    <v-input
-      v-model="msg3"
+      placeholder="请输入"></v-input>
+    <v-input v-model="msg3"
       placeholder="请输入"
       clearable
-      :areasize="areasize"
-    ></v-input>
-
+      :areasize="areasize"></v-input>
+    <v-input @change="getValue($event)"
+      v-model="msg2"></v-input>
     <!-- <input type="text" v-model="msg" /> -->
     <div>{{ msg }}</div>
     <div>{{ msg3 }}</div>
@@ -32,7 +29,12 @@ export default {
       areasize: { cols: 50, rows: 5 }
     }
   },
-  methods: {},
+  methods: {
+    getValue(val) {
+      // eslint-disable-next-line no-console
+      console.log(val)
+    }
+  },
   components: {
     vInput
   }
