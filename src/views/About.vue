@@ -7,7 +7,12 @@
       clearable
       placeholder="请输入"
     ></v-input>
-    <v-input v-model="msg3" placeholder="请输入" clearable></v-input>
+    <v-input
+      v-model="msg3"
+      placeholder="请输入"
+      clearable
+      :areasize="areasize"
+    ></v-input>
 
     <!-- <input type="text" v-model="msg" /> -->
     <div>{{ msg }}</div>
@@ -23,7 +28,8 @@ export default {
       msg: '',
       msg1: '',
       msg2: '',
-      msg3: ''
+      msg3: '',
+      areasize: { cols: 50, rows: 5 }
     }
   },
   methods: {},

@@ -58,6 +58,15 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    areasize: {
+      type: Object,
+      default: function() {
+        return {
+          cols: 30,
+          rows: 5
+        }
+      }
     }
   },
   computed: {
@@ -71,17 +80,15 @@ export default {
     }
   },
   data() {
-    return {
-      areasize: {
-        cols: 20,
-        rows: 2
-      }
-    }
+    return {}
   },
   methods: {
     cleanAll() {
       this.newValue = ''
     }
+  },
+  watch: {
+    deep: true
   }
 }
 </script>
