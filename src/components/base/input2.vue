@@ -1,6 +1,9 @@
 <template>
   <div class="main" :style="`width: ${width}px;height: ${height}px`">
     <template v-if="type == 'text'">
+      <span v-if="prefixIcon" class="prefix-icon">
+        <i :class="`iconfont ${prefixIcon}`"></i>
+      </span>
       <input
         class="input-area"
         type="text"
@@ -9,14 +12,28 @@
         :disabled="disabled"
         @blur="setValue"
         @keyup.enter="setValue"
+        :style="
+          `padding-left: ${pdl}px;padding-right: ${pdr}px;font-size: ${fs}px;`
+        "
       />
       <span
         class="clean"
         @click="cleanAll"
         v-if="clearable"
         v-show="newValue != ''"
+        :style="`right: ${mgr}px`"
         >x</span
       >
+      <span v-if="suffixIcon" class="suffix-icon">
+        <i :class="`iconfont ${suffixIcon}`"></i>
+      </span>
+      <div v-if="existPrepend" class="prepend">
+        <slot name="prepend"></slot>
+      </div>
+      <div v-if="existAppend" class="append">
+        <slot name="append"></slot>
+      </div>
+      <slot v-bind:mgr="width" name="hh"></slot>
     </template>
     <template v-if="type == 'textarea'">
       <textarea
@@ -78,6 +95,14 @@ export default {
           rows: 5
         }
       }
+    },
+    prefixIcon: {
+      type: String,
+      default: null
+    },
+    suffixIcon: {
+      type: String,
+      default: null
     }
   },
   computed: {
@@ -91,14 +116,31 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     // eslint-disable-next-line no-console
+    if (this.$slots.prepend && this.$slots.prepend.length > 0) {
+      this.existPrepend = true
+      this.width = 320
+      this.pdl = 85
+    }
+    if (this.$slots.append && this.$slots.append.length > 0) {
+      this.existAppend = true
+      this.width = 320
+      this.pdr = 85
+    }
     this.setSize()
+    this.setTextPadding()
   },
   data() {
     return {
       width: 120,
-      height: 30
+      height: 35,
+      pdl: null,
+      pdr: null,
+      fs: 14,
+      mgr: 6,
+      existPrepend: false,
+      existAppend: false
     }
   },
   methods: {
@@ -112,18 +154,40 @@ export default {
     },
     // 根据父组件传的size，设置input框尺寸
     setSize() {
-      if (this.size == 'medium') {
-        this.width = 120
-        this.height = 30
-      } else if (this.size == 'mini') {
-        this.width = 80
-        this.height = 20
-      } else if (this.size == 'large') {
-        this.width = 150
-        this.height = 40
-      } else if (this.size == 'small') {
-        this.width = 100
-        this.height = 25
+      if (!this.existPrepend && !this.existAppend) {
+        if (this.size == 'medium') {
+          this.width = 160
+          this.height = 35
+          this.fs = 16
+        } else if (this.size == 'mini') {
+          this.width = 120
+          this.height = 25
+        } else if (this.size == 'large') {
+          this.width = 180
+          this.height = 40
+          this.fs = 20
+        } else if (this.size == 'small') {
+          this.width = 140
+          this.height = 30
+        }
+      }
+    },
+    setTextPadding() {
+      // eslint-disable-next-line no-console
+      if (this.prefixIcon != null) {
+        this.pdl = 18
+      }
+      if (this.suffixIcon != null) {
+        this.pdr = 23
+      }
+      if (this.clearable) {
+        // eslint-disable-next-line no-console
+        this.pdr = 23
+        this.mgr = 6
+      }
+      if (this.suffixIcon != null && this.clearable) {
+        this.pdr = 40
+        this.mgr = 25
       }
     }
   }
@@ -135,14 +199,24 @@ export default {
   position: relative;
   display: inline-block;
   width: 180px;
-  height: 50px;
+  height: 35px;
   margin: 5px;
+  .prefix-icon {
+    display: inline-block;
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    position: absolute;
+    left: 3px;
+    top: 50%;
+    margin-top: -7px;
+  }
   .input-area {
     width: 100%;
     height: 100%;
     padding: 5px;
     box-sizing: border-box;
-    padding-right: 23px;
   }
   .clean {
     display: inline-block;
@@ -154,12 +228,46 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
-    right: 6px;
     top: 50%;
     margin-top: -7px;
     color: #b4bccc;
   }
-  .textarea {
+  .suffix-icon {
+    display: inline-block;
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -7px;
+  }
+  .prepend {
+    display: inline-block;
+    width: 80px;
+    height: 100%;
+    line-height: 35px;
+    box-sizing: border-box;
+    border: 1px solid #909399;
+    color: #909399;
+    background-color: #f5f7fa;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .append {
+    display: inline-block;
+    width: 80px;
+    height: 100%;
+    line-height: 35px;
+    box-sizing: border-box;
+    border: 1px solid #909399;
+    color: #909399;
+    background-color: #f5f7fa;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }
 </style>
