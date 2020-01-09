@@ -1,19 +1,24 @@
 <template>
   <div class="about">
     <h1>这是input组件</h1>
-    <v-input v-model="msg"
-      type="textarea"
+    <v-input
+      v-model="msg"
+      type="text"
+      size="large"
       clearable
-      placeholder="请输入"></v-input>
-    <v-input v-model="msg3"
+      placeholder="请输入"
+    ></v-input>
+    <v-input
+      v-model="msg3"
       placeholder="请输入"
       clearable
-      :areasize="areasize"></v-input>
-    <v-input @change="getValue($event)"
-      v-model="msg2"></v-input>
+      size="mini"
+    ></v-input>
+    <v-input @change="getValue($event)" v-model="msg2"></v-input>
     <!-- <input type="text" v-model="msg" /> -->
     <div>{{ msg }}</div>
     <div>{{ msg3 }}</div>
+    <div>{{ msg2 }}</div>
   </div>
 </template>
 
